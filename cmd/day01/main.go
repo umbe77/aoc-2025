@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"strconv"
 	"strings"
 
@@ -44,7 +43,7 @@ func part1() {
 	fmt.Println("Part 1:", pwd)
 }
 
-func part2() {
+func part2() { //result should be 5782
 	movements := make([]int, 0)
 	utils.ReadFile("./cmd/day01/input.txt", func(line string) {
 		a := []rune(line)
@@ -61,26 +60,46 @@ func part2() {
 
 	totalTouches := 0
 	currentPos := 50
+
 	for _, move := range movements {
-		if move > 0 {
-			step := currentPos + move
-			currentPos = (step) % 100
-			if step >= 100 {
-				totalTouches += (step / 100)
+		steps := utils.Abs(move)
+		for range steps {
+			if move > 0 {
+				currentPos = (currentPos + 1) % 100
+			} else {
+				currentPos = (currentPos - 1 + 100) % 100
 			}
 
-		} else {
-
-			steps := utils.Abs(move)
-			diff := currentPos - steps
-			if diff < 0 {
-				step := math.Ceil(math.Abs(float64(diff)) / 100)
-				totalTouches += int(step)
+			if currentPos == 0 {
+				totalTouches++
 			}
-			currentPos = ((diff % 100) + 100) % 100
-
 		}
 	}
+
+	// for _, move := range movements {
+	// 	if move > 0 {
+	// 		step := currentPos + move
+	// 		currentPos = (step) % 100
+	// 		// if step >= 100 {
+	// 		// 	totalTouches += (step / 100)
+	// 		// }
+	//
+	// 	} else {
+	//
+	// 		steps := utils.Abs(move)
+	// 		diff := currentPos - steps
+	// 		currentPos = ((diff % 100) + 100) % 100
+	//
+	// 		if diff < 0 {
+	// 			step := int(math.Ceil(math.Abs(float64(diff)) / 100))
+	// 			totalTouches += step
+	// 		}
+	// 		// if diff == 0 {
+	// 		// 	totalTouches++
+	// 		// }
+	//
+	// 	}
+	// }
 
 	fmt.Println("Part 2:", totalTouches)
 }
