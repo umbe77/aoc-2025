@@ -57,6 +57,61 @@ func part1() {
 
 func part2() {
 	// Implementation for part 2
+	ranges := make([]Range, 0)
+	utils.ReadFile("./cmd/day02/input.txt", func(line string) {
+		rngs := strings.SplitSeq(line, ",")
+		for r := range rngs {
+			bounds := strings.Split(r, "-")
+			start, err := strconv.Atoi(bounds[0])
+			if err != nil {
+				panic(err)
+			}
+			end, err := strconv.Atoi(bounds[1])
+			if err != nil {
+				panic(err)
+			}
+			ranges = append(ranges, Range{Start: start, End: end})
+		}
+	})
+
+	invalidNumbers := make([]int, 0)
+	sum := 0
+
+	for _, r := range ranges {
+		for i := r.Start; i <= r.End; i++ {
+			code := strconv.Itoa(i)
+			currentDigit := ""
+			isValid := true
+			for dIndex := 0; dIndex < len(strconv.Itoa(i)); dIndex++ {
+				currentDigit += string(code[dIndex])
+				currentDigitLen := len(currentDigit)
+				for k := currentDigitLen; k < len(strconv.Itoa(i)); k += currentDigitLen {
+					if k+currentDigitLen > len(strconv.Itoa(i)) {
+						isValid = true
+						break
+					}
+					cmpDigit := code[k : k+currentDigitLen]
+					if currentDigit != cmpDigit {
+						isValid = true
+						break
+					}
+					isValid = false
+				}
+				if !isValid {
+					break
+				}
+			}
+			if !isValid {
+				invalidNumbers = append(invalidNumbers, i)
+			}
+		}
+	}
+
+	for _, v := range invalidNumbers {
+		sum += v
+	}
+
+	fmt.Println("Part 2:", sum)
 }
 
 func main() {
