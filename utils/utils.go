@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"strconv"
 )
 
 func ReadFile(fPath string, line func(line string)) {
@@ -29,9 +30,29 @@ func ReadAllFile(fPath string) string {
 	return string(buf)
 }
 
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func Abs(a int) int {
 	if a < 0 {
 		return -a
 	}
 	return a
+}
+func Atoi(a string) int {
+	r, err := strconv.Atoi(a)
+	if err != nil {
+		panic(err)
+	}
+	return r
 }
