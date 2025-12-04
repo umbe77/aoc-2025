@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/umbe77/aoc-2025/utils"
 )
@@ -59,10 +60,40 @@ func part1() {
 }
 
 func part2() {
-	utils.ReadFile("./cmd/day04/sample.txt", func(line string) {
+	var count int
+	storage := make([][]string, 0)
+	nextStorage := make([][]string, 0)
+
+	utils.ReadFile("./cmd/day04/input.txt", func(line string) {
+		cols := make([]string, 0)
+		for _, c := range line {
+			cols = append(cols, string(c))
+		}
+		storage = append(storage, cols)
 	})
 
-	// fmt.Println("Part 2", total)
+	currentCount := math.MaxInt
+	for currentCount > 0 {
+		currentCount = 0
+		for y := 0; y < len(storage); y++ {
+			line := storage[y]
+			nextStorage = append(nextStorage, line)
+			for x := range line {
+				nextStorage[y][x] = line[x]
+				if line[x] == "@" {
+					neighbors := countNeighbors(y, x, storage)
+					if neighbors < 4 {
+						currentCount++
+						nextStorage[y][x] = "."
+					}
+				}
+			}
+		}
+		count += currentCount
+		storage = nextStorage
+	}
+
+	fmt.Println("Part 2", count)
 }
 
 func main() {
