@@ -8,9 +8,8 @@ import (
 )
 
 type worksheetcol struct {
-	values        []int
-	operation     string
-	maxDigitCount int
+	values    []int
+	operation string
 }
 
 type worksheet struct {
@@ -77,10 +76,59 @@ func part1() {
 }
 
 func part2() {
-	utils.ReadFile("./cmd/day06/sample.txt", func(line string) {
+	ws := worksheet{
+		cols: make([]worksheetcol, 0),
+	}
+	lines := make([]string, 0)
+
+	utils.ReadFile("./cmd/day06/input.txt", func(line string) {
+		lines = append(lines, line)
 	})
 
-	// fmt.Println("Part 2", fresh)
+	col := worksheetcol{
+		values: make([]int, 0),
+	}
+
+	for c := len(lines[0]) - 1; c >= 0; c-- {
+		n := ""
+		for i, l := range lines {
+			if i == len(lines)-1 {
+				col.values = append(col.values, utils.Atoi(n))
+
+				if l[c] != ' ' {
+					col.operation = string(l[c])
+					ws.cols = append(ws.cols, col)
+					col = worksheetcol{
+						values: make([]int, 0),
+					}
+					c--
+					break
+				}
+			}
+			if l[c] != ' ' {
+				n += string(l[c])
+			}
+		}
+	}
+
+	total := 0
+	for _, col := range ws.cols {
+		colTotal := 0
+		if col.operation == "*" {
+			colTotal = 1
+		}
+		for _, v := range col.values {
+			switch col.operation {
+			case "+":
+				colTotal += v
+			case "*":
+				colTotal *= v
+			}
+		}
+		total += colTotal
+	}
+
+	fmt.Println("Part 2:", total)
 }
 
 func main() {
