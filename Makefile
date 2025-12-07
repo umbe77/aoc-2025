@@ -17,3 +17,6 @@ day05: cmd/day05/main.go
 day06: cmd/day06/main.go
 	go run cmd/day06/main.go
 
+day07: cmd/day07/main.go
+	go run cmd/day07/main.go
+
