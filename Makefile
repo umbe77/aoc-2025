@@ -20,3 +20,9 @@ day06: cmd/day06/main.go
 day07: cmd/day07/main.go
 	go run cmd/day07/main.go
 
+day08: cmd/day08/main.go
+	go run cmd/day08/main.go
+
+day09: cmd/day09/main.go
+	go run cmd/day09/main.go
+
